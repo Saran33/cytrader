@@ -1,28 +1,23 @@
-backtrader
+Cytrader
 ==========
 
-.. image:: https://img.shields.io/pypi/v/backtrader.svg
-   :alt: PyPi Version
-   :scale: 100%
-   :target: https://pypi.python.org/pypi/backtrader/
-
-..  .. image:: https://img.shields.io/pypi/dm/backtrader.svg
-       :alt: PyPi Monthly Donwloads
-       :scale: 100%
-       :target: https://pypi.python.org/pypi/backtrader/
-
-.. image:: https://img.shields.io/pypi/l/backtrader.svg
+.. image:: https://img.shields.io/pypi/l/cytrader.svg
    :alt: License
    :scale: 100%
-   :target: https://github.com/backtrader/backtrader/blob/master/LICENSE
-.. image:: https://travis-ci.org/backtrader/backtrader.png?branch=master
+   :target: https://github.com/Saran33/cytrader/blob/master/LICENSE
+.. image:: https://travis-ci.org/cytrader/cytrader.png?branch=master
    :alt: Travis-ci Build Status
    :scale: 100%
-   :target: https://travis-ci.org/backtrader/backtrader
-.. image:: https://img.shields.io/pypi/pyversions/backtrader.svg
+   :target: https://travis-ci.org/cytrader/cytrader
+.. image:: https://img.shields.io/pypi/pyversions/cytrader.svg
    :alt: Python versions
    :scale: 100%
-   :target: https://pypi.python.org/pypi/backtrader/
+   :target: https://github.com/Saran33/cytrader
+
+Cython Backtesting & Trading:
+=========
+
+Cytrader is a fork of the popular [cytrader](https://github.com/mementum/cytrader) platform, cythonized for speed.
 
 **Yahoo API Note**:
 
@@ -41,18 +36,18 @@ different ways. Use the docs (and examples) Luke!
 ::
 
   from datetime import datetime
-  import backtrader as bt
+  import cytrader as ct
 
-  class SmaCross(bt.SignalStrategy):
+  class SmaCross(ct.SignalStrategy):
       def __init__(self):
-          sma1, sma2 = bt.ind.SMA(period=10), bt.ind.SMA(period=30)
-          crossover = bt.ind.CrossOver(sma1, sma2)
-          self.signal_add(bt.SIGNAL_LONG, crossover)
+          sma1, sma2 = ct.ind.SMA(period=10), ct.ind.SMA(period=30)
+          crossover = ct.ind.CrossOver(sma1, sma2)
+          self.signal_add(ct.SIGNAL_LONG, crossover)
 
-  cerebro = bt.Cerebro()
+  cerebro = ct.Cerebro()
   cerebro.addstrategy(SmaCross)
 
-  data0 = bt.feeds.YahooFinanceData(dataname='MSFT', fromdate=datetime(2011, 1, 1),
+  data0 = ct.feeds.YahooFinanceData(dataname='MSFT', fromdate=datetime(2011, 1, 1),
                                     todate=datetime(2012, 12, 31))
   cerebro.adddata(data0)
 
@@ -126,14 +121,14 @@ Python 2/3 Support
 Installation
 ============
 
-``backtrader`` is self-contained with no external dependencies (except if you
+``cytrader`` is self-contained with no external dependencies (except if you
 want to plot)
 
 From *pypi*:
 
-  - ``pip install backtrader``
+  - ``pip install cytrader``
 
-  - ``pip install backtrader[plotting]``
+  - ``pip install cytrader[plotting]``
 
     If ``matplotlib`` is not installed and you wish to do some plotting
 
@@ -154,7 +149,7 @@ the dependencies in the documentation.
 
 From source:
 
-  - Place the *backtrader* directory found in the sources inside your project
+  - Place the *cytrader* directory found in the sources inside your project
 
 Version numbering
 =================
