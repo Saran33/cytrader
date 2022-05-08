@@ -31,7 +31,7 @@ import operator
 from .utils.py3 import (filter, keys, integer_types, iteritems, itervalues,
                         map, MAXINT, string_types, with_metaclass)
 
-import backtrader as bt
+import cytrader as bt
 from .lineiterator import LineIterator, StrategyBase
 from .lineroot import LineSingle
 from .lineseries import LineSeriesStub
