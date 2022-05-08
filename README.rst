@@ -14,8 +14,7 @@ Cytrader
    :scale: 100%
    :target: https://github.com/Saran33/cytrader
 
-## Cython Backtesting & Trading:
-=========
+**Cython Backtesting & Trading**
 
 Cytrader is a fork of the popular [cytrader](https://github.com/mementum/cytrader) platform, cythonized for speed.
 
