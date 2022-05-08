@@ -20,9 +20,10 @@
 ###############################################################################
 from __future__ import (absolute_import, division, print_function,
                         unicode_literals)
-
+import cython
+from cpython.datetime cimport datetime
 import collections
-import datetime
+# import datetime
 
 import cytrader as bt
 from cytrader.comminfo import CommInfoBase
@@ -288,7 +289,7 @@ class BackBroker(bt.BrokerBase):
 
         return None
 
-    def set_fundmode(self, fundmode, fundstartval=None):
+    def set_fundmode(self, bint fundmode, fundstartval=None):
         '''Set the actual fundmode (True or False)
 
         If the argument fundstartval is not ``None``, it will used
@@ -307,25 +308,25 @@ class BackBroker(bt.BrokerBase):
         '''Set the starting value of the fund-like performance tracker'''
         self.p.fundstartval = fundstartval
 
-    def set_int2pnl(self, int2pnl):
+    def set_int2pnl(self, bint int2pnl):
         '''Configure assignment of interest to profit and loss'''
         self.p.int2pnl = int2pnl
 
-    def set_coc(self, coc):
+    def set_coc(self, bint coc):
         '''Configure the Cheat-On-Close method to buy the close on order bar'''
         self.p.coc = coc
 
-    def set_coo(self, coo):
+    def set_coo(self, bint coo):
         '''Configure the Cheat-On-Open method to buy the close on order bar'''
         self.p.coo = coo
 
-    def set_shortcash(self, shortcash):
+    def set_shortcash(self, bint shortcash):
         '''Configure the shortcash parameters'''
         self.p.shortcash = shortcash
 
     def set_slippage_perc(self, perc,
-                          slip_open=True, slip_limit=True,
-                          slip_match=True, slip_out=False):
+                          bint slip_open=True, bint slip_limit=True,
+                          bint slip_match=True, bint slip_out=False):
         '''Configure slippage to be percentage based'''
         self.p.slip_perc = perc
         self.p.slip_fixed = 0.0
@@ -334,9 +335,9 @@ class BackBroker(bt.BrokerBase):
         self.p.slip_match = slip_match
         self.p.slip_out = slip_out
 
-    def set_slippage_fixed(self, fixed,
-                           slip_open=True, slip_limit=True,
-                           slip_match=True, slip_out=False):
+    def set_slippage_fixed(self, double fixed,
+                           bint slip_open=True, bint slip_limit=True,
+                           bint slip_match=True, bint slip_out=False):
         '''Configure slippage to be fixed points based'''
         self.p.slip_perc = 0.0
         self.p.slip_fixed = fixed
@@ -349,11 +350,11 @@ class BackBroker(bt.BrokerBase):
         '''Sets a volume filler for volume filling execution'''
         self.p.filler = filler
 
-    def set_checksubmit(self, checksubmit):
+    def set_checksubmit(self, bint checksubmit):
         '''Sets the checksubmit parameter'''
         self.p.checksubmit = checksubmit
 
-    def set_eosbar(self, eosbar):
+    def set_eosbar(self, bint eosbar):
         '''Sets the eosbar parameter (alias: ``seteosbar``'''
         self.p.eosbar = eosbar
 
@@ -365,14 +366,14 @@ class BackBroker(bt.BrokerBase):
 
     getcash = get_cash
 
-    def set_cash(self, cash):
+    def set_cash(self, double cash):
         '''Sets the cash parameter (alias: ``setcash``)'''
         self.startingcash = self.cash = self.p.cash = cash
         self._value = cash
 
     setcash = set_cash
 
-    def add_cash(self, cash):
+    def add_cash(self, double cash):
         '''Add/Remove cash to the system (use a negative value to remove)'''
         self._cash_addition.append(cash)
 
@@ -388,7 +389,7 @@ class BackBroker(bt.BrokerBase):
 
     fundvalue = property(get_fundvalue)
 
-    def cancel(self, order, bracket=False):
+    def cancel(self, order, bint bracket=False):
         try:
             self.pending.remove(order)
         except ValueError:
@@ -402,7 +403,7 @@ class BackBroker(bt.BrokerBase):
             self._bracketize(order, cancel=True)
         return True
 
-    def get_value(self, datas=None, mkt=False, lever=False):
+    def get_value(self, datas=None, bint mkt=False, bint lever=False):
         '''Returns the portfolio value of the given datas (if datas is ``None``, then
         the total portfolio value will be returned (alias: ``getvalue``)
         '''
@@ -416,13 +417,13 @@ class BackBroker(bt.BrokerBase):
 
     getvalue = get_value
 
-    def get_value_lever(self, datas=None, mkt=False):
+    def get_value_lever(self, datas=None, bint mkt=False):
         return self.get_value(datas=datas, mkt=mkt)
 
     def _get_value(self, datas=None, lever=False):
-        pos_value = 0.0
-        pos_value_unlever = 0.0
-        unrealized = 0.0
+        cdef double pos_value = 0.0
+        cdef double pos_value_unlever = 0.0
+        cdef double unrealized = 0.0
 
         while self._cash_addition:
             c = self._cash_addition.popleft()
@@ -489,7 +490,7 @@ class BackBroker(bt.BrokerBase):
     def get_leverage(self):
         return self._leverage
 
-    def get_orders_open(self, safe=False):
+    def get_orders_open(self, bint safe=False):
         '''Returns an iterable with the orders which are still open (either not
         executed or partially executed
 
@@ -529,7 +530,7 @@ class BackBroker(bt.BrokerBase):
 
         return pref
 
-    def submit(self, order, check=True):
+    def submit(self, order, bint check=True):
         pref = self._take_children(order)
         if pref is None:  # order has not been taken
             return order
@@ -544,7 +545,7 @@ class BackBroker(bt.BrokerBase):
 
         return order
 
-    def transmit(self, order, check=True):
+    def transmit(self, order, bint check=True):
         if check and self.p.checksubmit:
             order.submit()
             self.submitted.append(order)
@@ -556,7 +557,7 @@ class BackBroker(bt.BrokerBase):
         return order
 
     def check_submitted(self):
-        cash = self.cash
+        cdef double cash = self.cash
         positions = dict()
 
         while self.submitted:
@@ -589,7 +590,7 @@ class BackBroker(bt.BrokerBase):
         self.pending.append(order)
         self.notify(order)
 
-    def _bracketize(self, order, cancel=False):
+    def _bracketize(self, order, bint cancel=False):
         oref = order.ref
         pref = getattr(order.parent, 'ref', oref)
         parent = oref == pref
@@ -629,7 +630,7 @@ class BackBroker(bt.BrokerBase):
             self._ocos[oref] = ocoref  # ref to group leader
             self._ocol[ocoref].append(oref)  # add to group
 
-    def add_order_history(self, orders, notify=True):
+    def add_order_history(self, orders, bint notify=True):
         oiter = iter(orders)
         o = next(oiter, None)
         self._userhist.append([o, oiter, notify])
@@ -638,7 +639,7 @@ class BackBroker(bt.BrokerBase):
         # iterable with the following pro item
         # [datetime, share_value, net asset value]
         fiter = iter(fund)
-        f = list(next(fiter))  # must not be empty
+        cdef list f = list(next(fiter))  # must not be empty
         self._fundhist = [f, fiter]
         # self._fhistlast = f[1:]
 
@@ -646,10 +647,10 @@ class BackBroker(bt.BrokerBase):
 
     def buy(self, owner, data,
             size, price=None, plimit=None,
-            exectype=None, valid=None, tradeid=0, oco=None,
+            exectype=None, valid=None, int tradeid=0, oco=None,
             trailamount=None, trailpercent=None,
-            parent=None, transmit=True,
-            histnotify=False, _checksubmit=True,
+            parent=None, bint transmit=True,
+            bint histnotify=False, bint _checksubmit=True,
             **kwargs):
 
         order = BuyOrder(owner=owner, data=data,
@@ -666,10 +667,10 @@ class BackBroker(bt.BrokerBase):
 
     def sell(self, owner, data,
              size, price=None, plimit=None,
-             exectype=None, valid=None, tradeid=0, oco=None,
+             exectype=None, valid=None, int tradeid=0, oco=None,
              trailamount=None, trailpercent=None,
-             parent=None, transmit=True,
-             histnotify=False, _checksubmit=True,
+             parent=None, bint transmit=True,
+             bint histnotify=False, bint _checksubmit=True,
              **kwargs):
 
         order = SellOrder(owner=owner, data=data,
@@ -686,6 +687,7 @@ class BackBroker(bt.BrokerBase):
 
     def _execute(self, order, ago=None, price=None, cash=None, position=None,
                  dtcoc=None):
+        cdef double size, pprice_orig, psize, pprice, opened, closed, pnl, closedvalue, popened, openedvalue
         # ago = None is used a flag for pseudo execution
         if ago is not None and price is None:
             return  # no psuedo exec no price - no execution
@@ -723,7 +725,7 @@ class BackBroker(bt.BrokerBase):
             pnl = comminfo.profitandloss(-closed, pprice_orig, price)
             cash = self.cash
         else:
-            pnl = 0
+            pnl = 0.
             if not self.p.coo:
                 price = pprice_orig = order.created.price
             else:
@@ -850,8 +852,8 @@ class BackBroker(bt.BrokerBase):
     def _try_exec_historical(self, order):
         self._execute(order, ago=0, price=order.created.price)
 
-    def _try_exec_market(self, order, popen, phigh, plow):
-        ago = 0
+    def _try_exec_market(self, order, double popen, double phigh, double plow):
+        cdef double exprice
         if self.p.coc and order.info.get('coc', True):
             dtcoc = order.created.dt
             exprice = order.created.pclose
@@ -869,13 +871,13 @@ class BackBroker(bt.BrokerBase):
 
         self._execute(order, ago=0, price=p, dtcoc=dtcoc)
 
-    def _try_exec_close(self, order, pclose):
+    def _try_exec_close(self, order, double pclose):
         # pannotated allows to keep track of the closing bar if there is no
         # information which lets us know that the current bar is the closing
         # bar (like matching end of session bar)
         # The actual matching will be done one bar afterwards but using the
         # information from the actual closing bar
-
+        cdef int ago
         dt0 = order.data.datetime[0]
         # don't use "len" -> in replay the close can be reached with same len
         if dt0 > order.created.dt:  # can only execute after creation time
@@ -895,7 +897,8 @@ class BackBroker(bt.BrokerBase):
         # If no exexcution has taken place ... annotate the closing price
         order.pannotated = pclose
 
-    def _try_exec_limit(self, order, popen, phigh, plow, plimit):
+    def _try_exec_limit(self, order, double popen, double phigh, double plow, double plimit):
+        cdef double pmax, pmin, p
         if order.isbuy():
             if plimit >= popen:
                 # open smaller/equal than requested - buy cheaper
@@ -911,14 +914,15 @@ class BackBroker(bt.BrokerBase):
             if plimit <= popen:
                 # open greater/equal than requested - sell more expensive
                 pmin = max(plow, plimit)
-                p = self._slip_down(plimit, popen, doslip=self.p.slip_open,
+                p = self._slip_down(pmin, popen, doslip=self.p.slip_open,
                                     lim=True)
                 self._execute(order, ago=0, price=p)
             elif plimit <= phigh:
                 # day high above req price ... match limit price
                 self._execute(order, ago=0, price=plimit)
 
-    def _try_exec_stop(self, order, popen, phigh, plow, pcreated, pclose):
+    def _try_exec_stop(self, order, double popen, double phigh, double plow, double pcreated, double pclose):
+        cdef double p
         if order.isbuy():
             if popen >= pcreated:
                 # price penetrated with an open gap - use open
@@ -944,8 +948,9 @@ class BackBroker(bt.BrokerBase):
             order.trailadjust(pclose)
 
     def _try_exec_stoplimit(self, order,
-                            popen, phigh, plow, pclose,
-                            pcreated, plimit):
+                            double popen, double phigh, double plow,
+                            double pclose, double pcreated, double plimit):
+        cdef double p
         if order.isbuy():
             if popen >= pcreated:
                 order.triggered = True
@@ -991,10 +996,10 @@ class BackBroker(bt.BrokerBase):
         if order.alive() and order.exectype == Order.StopTrailLimit:
             order.trailadjust(pclose)
 
-    def _slip_up(self, pmax, price, doslip=True, lim=False):
+    def _slip_up(self, double pmax, double price, bint doslip=True, bint lim=False):
         if not doslip:
             return price
-
+        cdef double slip_perc, slip_fixed, pslip
         slip_perc = self.p.slip_perc
         slip_fixed = self.p.slip_fixed
         if slip_perc:
@@ -1014,10 +1019,10 @@ class BackBroker(bt.BrokerBase):
 
         return None  # no price can be returned
 
-    def _slip_down(self, pmin, price, doslip=True, lim=False):
+    def _slip_down(self, double pmin, double price, bint doslip=True, bint lim=False):
         if not doslip:
             return price
-
+        cdef double slip_perc, slip_fixed, pslip
         slip_perc = self.p.slip_perc
         slip_fixed = self.p.slip_fixed
         if slip_perc:
@@ -1039,7 +1044,7 @@ class BackBroker(bt.BrokerBase):
 
     def _try_exec(self, order):
         data = order.data
-
+        cdef double popen, phigh, plow, pclose, pcreated, plimit
         popen = getattr(data, 'tick_open', None)
         if popen is None:
             popen = data.open[0]
@@ -1081,12 +1086,12 @@ class BackBroker(bt.BrokerBase):
             self._try_exec_historical(order)
 
     def _process_fund_history(self):
-        fhist = self._fundhist  # [last element, iterator]
+        cdef list fhist = self._fundhist  # [last element, iterator]
         f, funds = fhist
         if not f:
             return self._fhistlast
 
-        dt = f[0]  # date/datetime instance
+        cdef datetime dt = f[0]  # date/datetime instance
         if isinstance(dt, string_types):
             dtfmt = '%Y-%m-%d'
             if 'T' in dt:
@@ -1114,6 +1119,7 @@ class BackBroker(bt.BrokerBase):
         return self._fhistlast
 
     def _process_order_history(self):
+        cdef double size, price
         for uhist in self._userhist:
             uhorder, uhorders, uhnotify = uhist
             while uhorder is not None:
@@ -1181,6 +1187,8 @@ class BackBroker(bt.BrokerBase):
             self.check_submitted()
 
         # Discount any cash for positions hold
+        cdef double credit, dcredit
+        cdef datetime dt0
         credit = 0.0
         for data, pos in self.positions.items():
             if pos:

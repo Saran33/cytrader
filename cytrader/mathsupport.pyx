@@ -20,11 +20,23 @@
 ###############################################################################
 from __future__ import (absolute_import, division, print_function,
                         unicode_literals)
+import cython
+from libc.math cimport sqrt
+from libc.stdlib cimport malloc, free
 
-import math
+
+@cython.boundscheck(False)
+@cython.wraparound(False)
+cdef inline double sum(list y):
+    cdef int N, i 
+    N = len(y)
+    cdef double x = y[0]
+    for i in xrange(1,N):
+        x += y[i]
+    return x
 
 
-def average(x, bessel=False):
+cpdef double average(list x, bint bessel=False):
     '''
     Args:
       x: iterable with len
@@ -35,10 +47,11 @@ def average(x, bessel=False):
     Returns:
       A float with the average of the elements of x
     '''
-    return math.fsum(x) / (len(x) - bessel)
+    cdef int N = len(x)
+    return sum(x) / (N - bessel)
 
 
-def variance(x, avgx=None):
+cpdef list variance(x, avgx=None):
     '''
     Args:
       x: iterable with len
@@ -51,7 +64,7 @@ def variance(x, avgx=None):
     return [pow(y - avgx, 2.0) for y in x]
 
 
-def standarddev(x, avgx=None, bessel=False):
+cpdef double standarddev(x, avgx=None, bint bessel=False):
     '''
     Args:
       x: iterable with len
@@ -62,4 +75,4 @@ def standarddev(x, avgx=None, bessel=False):
     Returns:
       A float with the standard deviation of the elements of x
     '''
-    return math.sqrt(average(variance(x, avgx), bessel=bessel))
+    return sqrt(average(variance(x, avgx), bessel=bessel))

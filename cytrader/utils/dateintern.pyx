@@ -20,13 +20,15 @@
 ###############################################################################
 from __future__ import (absolute_import, division, print_function,
                         unicode_literals)
-
-import datetime
+import cython
+cimport cpython.datetime as datetime
+# import datetime
 import math
 import time as _time
 
 from .py3 import string_types
 
+cdef datetime.timedelta ZERO, STDOFFSET, DSTOFFSET, DSTDIFF
 
 ZERO = datetime.timedelta(0)
 
@@ -136,17 +138,16 @@ class _LocalTimezone(datetime.tzinfo):
 UTC = _UTC()
 TZLocal = _LocalTimezone()
 
+cdef double HOURS_PER_DAY = 24.0
+cdef double MINUTES_PER_HOUR = 60.0
+cdef double SECONDS_PER_MINUTE = 60.0
+cdef double MUSECONDS_PER_SECOND = 1e6
+cdef double MINUTES_PER_DAY = MINUTES_PER_HOUR * HOURS_PER_DAY
+cdef double SECONDS_PER_DAY = SECONDS_PER_MINUTE * MINUTES_PER_DAY
+cdef double MUSECONDS_PER_DAY = MUSECONDS_PER_SECOND * SECONDS_PER_DAY
 
-HOURS_PER_DAY = 24.0
-MINUTES_PER_HOUR = 60.0
-SECONDS_PER_MINUTE = 60.0
-MUSECONDS_PER_SECOND = 1e6
-MINUTES_PER_DAY = MINUTES_PER_HOUR * HOURS_PER_DAY
-SECONDS_PER_DAY = SECONDS_PER_MINUTE * MINUTES_PER_DAY
-MUSECONDS_PER_DAY = MUSECONDS_PER_SECOND * SECONDS_PER_DAY
 
-
-def num2date(x, tz=None, naive=True):
+cpdef datetime.datetime num2date(double x, tz=None, bint naive=True):
     # Same as matplotlib except if tz is None a naive datetime object
     # will be returned.
     """
@@ -162,9 +163,9 @@ def num2date(x, tz=None, naive=True):
     be returned.
     """
 
-    ix = int(x)
-    dt = datetime.datetime.fromordinal(ix)
-    remainder = float(x) - ix
+    cdef int ix = int(x)
+    cdef datetime.datetime dt = datetime.datetime.fromordinal(ix)
+    cdef double remainder = float(x) - ix
     hour, remainder = divmod(HOURS_PER_DAY * remainder, 1)
     minute, remainder = divmod(MINUTES_PER_HOUR * remainder, 1)
     second, remainder = divmod(SECONDS_PER_MINUTE * remainder, 1)
@@ -191,15 +192,15 @@ def num2date(x, tz=None, naive=True):
     return dt
 
 
-def num2dt(num, tz=None, naive=True):
+cpdef datetime.datetime num2dt(num, tz=None, naive=True):
     return num2date(num, tz=tz, naive=naive).date()
 
 
-def num2time(num, tz=None, naive=True):
+cpdef datetime.datetime num2time(num, tz=None, naive=True):
     return num2date(num, tz=tz, naive=naive).time()
 
 
-def date2num(dt, tz=None):
+cpdef double date2num(datetime.datetime dt, tz=None):
     """
     Convert :mod:`datetime` to the Gregorian date as UTC float days,
     preserving hours, minutes, seconds and microseconds.  Return value
@@ -227,7 +228,7 @@ def date2num(dt, tz=None):
     return base
 
 
-def time2num(tm):
+cpdef double time2num(tm):
     """
     Converts the hour/minute/second/microsecond part of tm (datetime.datetime
     or time) to a num
