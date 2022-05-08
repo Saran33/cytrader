@@ -29,8 +29,8 @@ except:
 
 import testcommon
 
-import backtrader as bt
-import backtrader.indicators as btind
+import cytrader as bt
+import cytrader.indicators as btind
 
 BUYCREATE = [
     '3641.42', '3798.46', '3874.61', '3860.00', '3843.08', '3648.33',

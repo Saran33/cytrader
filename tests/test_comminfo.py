@@ -23,8 +23,8 @@ from __future__ import (absolute_import, division, print_function,
 
 import testcommon
 
-import backtrader as bt
-from backtrader import CommissionInfo, Position
+import cytrader as bt
+from cytrader import CommissionInfo, Position
 
 
 def check_stocks():

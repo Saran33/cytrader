@@ -28,7 +28,7 @@ import time
 import sys
 
 
-import backtrader as bt
+import cytrader as bt
 
 
 class St(bt.Strategy):

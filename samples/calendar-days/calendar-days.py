@@ -24,10 +24,10 @@ from __future__ import (absolute_import, division, print_function,
 import argparse
 import datetime
 
-import backtrader as bt
-import backtrader.indicators as btind
-import backtrader.feeds as btfeeds
-import backtrader.filters as btfilters
+import cytrader as bt
+import cytrader.indicators as btind
+import cytrader.feeds as btfeeds
+import cytrader.filters as btfilters
 
 
 def runstrat():

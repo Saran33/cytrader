@@ -25,7 +25,7 @@ import argparse
 import collections
 import datetime
 
-import backtrader as bt
+import cytrader as bt
 
 MAINSIGNALS = collections.OrderedDict(
     (('longshort', bt.SIGNAL_LONGSHORT),

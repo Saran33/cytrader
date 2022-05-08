@@ -25,9 +25,9 @@ import argparse
 import datetime
 
 # The above could be sent to an independent module
-import backtrader as bt
-from backtrader.utils import flushfile  # win32 quick stdout flushing
-from backtrader.utils.py3 import string_types
+import cytrader as bt
+from cytrader.utils import flushfile  # win32 quick stdout flushing
+from cytrader.utils.py3 import string_types
 
 
 class TestStrategy(bt.Strategy):

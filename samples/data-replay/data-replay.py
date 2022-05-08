@@ -23,9 +23,9 @@ from __future__ import (absolute_import, division, print_function,
 
 import argparse
 
-import backtrader as bt
-import backtrader.feeds as btfeeds
-import backtrader.indicators as btind
+import cytrader as bt
+import cytrader.feeds as btfeeds
+import cytrader.indicators as btind
 
 
 class SMAStrategy(bt.Strategy):

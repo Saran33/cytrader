@@ -28,8 +28,8 @@ import time
 import sys
 
 
-import backtrader as bt
-from backtrader.utils.py3 import bytes
+import cytrader as bt
+from cytrader.utils.py3 import bytes
 
 
 DATAFORMATS = dict(

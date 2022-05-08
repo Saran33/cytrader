@@ -23,12 +23,12 @@ from __future__ import (absolute_import, division, print_function,
 
 import argparse
 
-import backtrader as bt
-import backtrader.feeds as btfeeds
-import backtrader.indicators as btind
-from backtrader import ResamplerDaily, ResamplerWeekly, ResamplerMonthly
-from backtrader import ReplayerDaily, ReplayerWeekly, ReplayerMonthly
-from backtrader.utils import flushfile
+import cytrader as bt
+import cytrader.feeds as btfeeds
+import cytrader.indicators as btind
+from cytrader import ResamplerDaily, ResamplerWeekly, ResamplerMonthly
+from cytrader import ReplayerDaily, ReplayerWeekly, ReplayerMonthly
+from cytrader.utils import flushfile
 
 
 class SMAStrategy(bt.Strategy):

@@ -24,8 +24,8 @@ from __future__ import (absolute_import, division, print_function,
 import argparse
 import datetime
 
-import backtrader as bt
-import backtrader.indicators as btind
+import cytrader as bt
+import cytrader.indicators as btind
 
 
 class DayStepsCloseFilter(bt.with_metaclass(bt.MetaParams, object)):

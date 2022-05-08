@@ -25,7 +25,7 @@ import argparse
 import datetime
 import random
 
-import backtrader as bt
+import cytrader as bt
 
 
 class CloseSMA(bt.Strategy):

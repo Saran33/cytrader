@@ -30,8 +30,8 @@ except:
 
 import testcommon
 
-import backtrader as bt
-import backtrader.indicators as btind
+import cytrader as bt
+import cytrader.indicators as btind
 
 
 class TestStrategy(bt.Strategy):
