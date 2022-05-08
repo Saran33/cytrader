@@ -1,22 +1,8 @@
 Cytrader
 ==========
 
-.. image:: https://img.shields.io/pypi/l/cytrader.svg
-   :alt: License
-   :scale: 100%
-   :target: https://github.com/Saran33/cytrader/blob/master/LICENSE
-.. image:: https://travis-ci.org/cytrader/cytrader.png?branch=master
-   :alt: Travis-ci Build Status
-   :scale: 100%
-   :target: https://travis-ci.org/cytrader/cytrader
-.. image:: https://img.shields.io/pypi/pyversions/cytrader.svg
-   :alt: Python versions
-   :scale: 100%
-   :target: https://github.com/Saran33/cytrader
-
-**Cython Backtesting & Trading**
-
 Cytrader is a fork of the popular [cytrader](https://github.com/mementum/cytrader) platform, cythonized for speed.
+
 
 **Yahoo API Note**:
 
