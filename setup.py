@@ -29,7 +29,7 @@ with codecs.open(os.path.join(here, 'README.rst'), encoding='utf-8') as f:
     long_description = f.read()
 
 # Package name
-pname = 'backtrader'
+pname = 'cytrader'
 
 # Get the version ... execfile is only on Py2 ... use exec + compile + open
 vname = 'version.py'
@@ -102,7 +102,7 @@ setuptools.setup(
     # You can just specify the packages manually here if your project is
     # simple. Or you can use find_packages().
     packages=setuptools.find_packages(exclude=['docs', 'docs2', 'samples']),
-    # packages=['backtrader', '],
+    # packages=['cytrader', '],
 
     # List run-time dependencies here.
     # These will be installed by pip when your
@@ -134,7 +134,7 @@ setuptools.setup(
     # "scripts" keyword. Entry points provide cross-platform support and allow
     # pip to create the appropriate form of executable for the target platform.
     # entry_points={'console_scripts': ['sample=sample:main',],},
-    entry_points={'console_scripts': ['btrun=backtrader.btrun:btrun']},
+    entry_points={'console_scripts': ['btrun=cytrader.btrun:btrun']},
 
     scripts=['tools/bt-run.py'],
 )
