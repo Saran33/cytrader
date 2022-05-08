@@ -57,7 +57,7 @@ from .strategy import *
 
 from .writer import *
 
-from .signal import *
+from .btsignal import *
 
 from .cerebro import *
 from .timer import *

@@ -37,7 +37,7 @@ with open(os.path.join(pname, vname)) as f:
     exec(compile(f.read(), vname, 'exec'))
 
 # Generate links
-gurl = 'https://github.com/mementum/' + pname
+gurl = 'https://github.com/Saran33/' + pname
 gdurl = gurl + '/tarball/' + __version__
 
 setuptools.setup(
@@ -56,7 +56,7 @@ setuptools.setup(
     download_url=gdurl,
 
     # Author details
-    author='Daniel Rodriguez',
+    author='Daniel Rodriguez, Saran Connolly',
     author_email='danjrod@gmail.com',
 
     # Choose your license
@@ -68,7 +68,7 @@ setuptools.setup(
         #   3 - Alpha
         #   4 - Beta
         #   5 - Production/Stable
-        'Development Status :: 5 - Production/Stable',
+        'Development Status :: 3 - Alpha',
 
         # Indicate who your project is intended for
         'Intended Audience :: Developers',

@@ -111,7 +111,7 @@ def btrun(pargs=''):
     # get and add signals
     signals = getobjects(args.signals, bt.Indicator, bt.signals, issignal=True)
     for sig, kwargs, sigtype in signals:
-        stype = getattr(bt.signal, 'SIGNAL_' + sigtype.upper())
+        stype = getattr(bt.btsignal, 'SIGNAL_' + sigtype.upper())
         cerebro.add_signal(stype, sig, **kwargs)
 
     # get and add strategies

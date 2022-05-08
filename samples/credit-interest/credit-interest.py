@@ -84,20 +84,20 @@ def runstrat(args=None):
     cerebro.signal_strategy(St)
     cerebro.addsizer(bt.sizers.FixedSize, stake=args.stake)
 
-    sigtype = bt.signal.SIGNAL_LONGSHORT
+    sigtype = bt.btsignal.SIGNAL_LONGSHORT
     if args.long:
-        sigtype = bt.signal.SIGNAL_LONG
+        sigtype = bt.btsignal.SIGNAL_LONG
     elif args.short:
-        sigtype = bt.signal.SIGNAL_SHORT
+        sigtype = bt.btsignal.SIGNAL_SHORT
 
     cerebro.add_signal(sigtype,
                        SMACrossOver, p1=args.period1, p2=args.period2)
 
     if args.no_exit:
         if args.long:
-            cerebro.add_signal(bt.signal.SIGNAL_LONGEXIT, NoExit)
+            cerebro.add_signal(bt.btsignal.SIGNAL_LONGEXIT, NoExit)
         elif args.short:
-            cerebro.add_signal(bt.signal.SIGNAL_SHORTEXIT, NoExit)
+            cerebro.add_signal(bt.btsignal.SIGNAL_SHORTEXIT, NoExit)
 
     comminfo = bt.CommissionInfo(
         mult=args.mult,
