@@ -70,7 +70,10 @@ datas/*.py
 
 .idea/
 
+.DS_Store
+
 # Cython
-.html
-.c 
-.so
+*.html
+*.c 
+*.so
+NOTES.md

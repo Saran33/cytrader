@@ -20,10 +20,8 @@
 ###############################################################################
 from __future__ import (absolute_import, division, print_function,
                         unicode_literals)
-# import cython
 import datetime as _datetime
 from datetime import datetime
-# from cpython.datetime cimport datetime
 import inspect
 
 from .utils.py3 import range, with_metaclass

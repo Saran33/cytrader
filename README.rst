@@ -1,7 +1,7 @@
 Cytrader
 ==========
 
-Cytrader is a fork of the popular `Backtrader <https://github.com/mementum/backtrader>`_ platform, cythonized for speed.
+Cytrader is a fork of the popular `Backtrader <https://github.com/mementum/backtrader>`_ platform, partially cythonized for speed.
 
 
 **Yahoo API Note**:

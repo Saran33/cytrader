@@ -20,7 +20,8 @@
 ###############################################################################
 from __future__ import (absolute_import, division, print_function,
                         unicode_literals)
-
+import cython
+from cytrader.utils.cythfuncs import cstring_write, cstring_array_write
 import collections
 import io
 import itertools
@@ -134,17 +135,17 @@ class WriterFile(WriterBase):
             self.writeiterable(self.values, func=str, counter=next(self._len))
             self.values = list()
 
-    def addheaders(self, headers):
+    def addheaders(self, list headers):
         if self.p.csv:
             self.headers.extend(headers)
 
-    def addvalues(self, values):
+    def addvalues(self, str values):
         if self.p.csv:
             if self.p.csv_filternan:
                 values = map(lambda x: x if x == x else '', values)
             self.values.extend(values)
 
-    def writeiterable(self, iterable, func=None, counter=''):
+    def writeiterable(self, iterable, func=None, char* counter=''):
         if self.p.csv_counter:
             iterable = itertools.chain([counter], iterable)
 
@@ -154,17 +155,20 @@ class WriterFile(WriterBase):
         line = self.p.csvsep.join(iterable)
         self.writeline(line)
 
-    def writeline(self, line):
-        self.out.write(line + '\n')
+    def writeline(self, char* line):
+        # self.out.write(line + '\n')
+        cstring_write(line, self.out)
 
     def writelines(self, lines):
-        for l in lines:
-            self.out.write(l + '\n')
+        # for l in lines:
+        #    self.out.write(l + '\n')
+        cstring_array_write(lines, self.out)
 
-    def writelineseparator(self, level=0):
+    def writelineseparator(self, int level=0):
         sepnum = level % len(self.p.separators)
         separator = self.p.separators[sepnum]
 
+        cdef str line
         line = ' ' * (level * self.p.indent)
         line += separator * (self.p.seplen - (level * self.p.indent))
         self.writeline(line)

@@ -176,6 +176,7 @@ class CommInfoBase(with_metaclass(MetaParams)):
 
           - Use param ``automargin`` * ``price`` if ``automargin > 0``
         '''
+        print("automargin:", self.p.automargin)
         if not self.p.automargin:
             return self.p.margin
 
@@ -189,12 +190,22 @@ class CommInfoBase(with_metaclass(MetaParams)):
         '''Returns the level of leverage allowed for this comission scheme'''
         return self.p.leverage
 
-    def getsize(self, price, cash):
-        '''Returns the needed size to meet a cash operation at a given price'''
+    def getsize(self, price, target):
+        '''Returns the needed size to meet a target operation at a given price'''
         if not self._stocklike:
-            return int(self.p.leverage * (cash // self.get_margin(price)))
+            return int(self.p.leverage * (target // self.get_margin(price)))
 
-        return int(self.p.leverage * (cash // price))
+        return int(self.p.leverage * (target // price))
+
+    def get_fracsize(self, price, target):
+        '''Returns the needed fractional share size to meet a target operation at a given price.
+           Returns a float rather than an int, e.g. for trading cryptocurrency
+           or forex rather than fixed contract sizes.'''
+        if not self._stocklike:
+
+            return round(self.p.leverage * (target / self.get_margin(price)), 2)
+
+        return round(self.p.leverage * (target / price), 2)
 
     def getoperationcost(self, size, price):
         '''Returns the needed amount of cash an operation would cost'''
