@@ -1,2 +1,2 @@
 [build-system]
-requires = ["distutils", "Cython"]
+requires = ["Cython"]
