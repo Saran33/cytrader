@@ -5,6 +5,7 @@ Cytrader is a fork of the popular `Backtrader <https://github.com/mementum/backt
 
 **To install from git**:
 ``pip install git+https://github.com/Saran33/cytrader.git``
+
 **To build from cython files**:
 ::
   cd cytrader
