@@ -281,6 +281,11 @@ class BackBroker(bt.BrokerBase):
         self._fundshares = self.p.cash / self._fundval
         self._cash_addition = collections.deque()
 
+        if hasattr(self.comminfo, 'futures'):
+            self.futures = self.comminfo.futures
+        else:
+            self.futures = False
+
     def get_notification(self):
         try:
             return self.notifs.popleft()
