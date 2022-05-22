@@ -77,3 +77,4 @@ datas/*.py
 *.c 
 *.so
 NOTES.md
+pyproject.toml__
