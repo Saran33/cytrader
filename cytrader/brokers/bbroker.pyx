@@ -1049,7 +1049,6 @@ class BackBroker(bt.BrokerBase):
 
     def _try_exec(self, order):
         data = order.data
-        cdef double popen, phigh, plow, pclose, pcreated, plimit
         popen = getattr(data, 'tick_open', None)
         if popen is None:
             popen = data.open[0]
