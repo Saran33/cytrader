@@ -201,11 +201,13 @@ class CommInfoBase(with_metaclass(MetaParams)):
         '''Returns the needed fractional share size to meet a target operation at a given price.
            Returns a float rather than an int, e.g. for trading cryptocurrency
            or forex rather than fixed contract sizes.'''
+        leverage = self.p.leverage
         if not self._stocklike:
+            # print("NOT STOCKLIKE", price, target, leverage)
 
-            return round(self.p.leverage * (target / self.get_margin(price)), 2)
-
-        return round(self.p.leverage * (target / price), 2)
+            return round(leverage * (target / self.get_margin(price)), 2)
+        # print("STOCKLIKE", price, target, leverage)
+        return round(leverage * (target / price), 2)
 
     def getoperationcost(self, size, price):
         '''Returns the needed amount of cash an operation would cost'''
